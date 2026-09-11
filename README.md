@@ -171,8 +171,7 @@ showing, ideally the Mona Lisa naming Leonardo da Vinci]*
 
 # Diagrams
 
-![Workflow](Add your workflow/architecture diagram here)
-
+![Workflow]
 *Three planes, deliberately decoupled so a failure in one cannot kill the
 others:*
 
