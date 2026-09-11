@@ -155,19 +155,28 @@ For Software:
 
 # Screenshots (Add at least 3)
 
-![Screenshot1](Add screenshot 1 here with proper name)
+![Screenshot1](public/screenshot1.jpeg)
 
-*[TODO: capture the landing screen — upload / camera / one-tap Mona Lisa]*
+*The landing screen, resuming a session. The notice reads നിന്റെ ചിത്രം
+ഓർത്തുവെച്ചു — "picked up where you left off" — which is the `sessionStorage`
+snapshot restoring the picture after a page reload, rather than dumping you back
+at the file picker.*
 
-![Screenshot2](Add screenshot 2 here with proper name)
+![Screenshot2](public/screenshot2.jpeg)
 
-*[TODO: capture the prepare screen — mouth and eyes being dragged onto the
-subject, with the voice and roast intensity selectors visible]*
+*The character on stage, framed and named മോനാലിസ. The cartoon eyes and mouth are
+SVG overlays drawn on top of the photograph — no video is generated per reply,
+which is what keeps the conversation live. The eyes track your cursor with a
+lightly damped spring and blink on their own.*
 
-![Screenshot3](Add screenshot 3 here with proper name)
+![Screenshot3](public/screenshot3.jpeg)
 
-*[TODO: capture a live conversation — mouth mid-speech with Malayalam captions
-showing, ideally the Mona Lisa naming Leonardo da Vinci]*
+*A live conversation. The Malayalam caption grows sentence by sentence as the
+character speaks; here it has just reconnected, so it addresses the user by name
+and carries on the earlier exchange instead of reintroducing itself. Below:
+push-to-talk held with the space bar, the Escape button that makes it lunge at
+the frame edge, a type-a-question fallback for when the microphone is refused,
+and clickable suggested questions.*
 
 # Diagrams
 
