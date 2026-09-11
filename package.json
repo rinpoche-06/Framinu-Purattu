@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "description": "Framinu Purathu (Out of Frame) - your picture talks back, with attitude.",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "concurrently -n server,client -c blue,magenta \"npm:dev:server\" \"npm:dev:client\"",
     "dev:server": "node --watch server/index.mjs",
