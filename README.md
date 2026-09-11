@@ -171,10 +171,6 @@ showing, ideally the Mona Lisa naming Leonardo da Vinci]*
 
 # Diagrams
 
-![Workflow]
-*Three planes, deliberately decoupled so a failure in one cannot kill the
-others:*
-
 ```
 BROWSER                          NODE SERVER                   PROVIDERS
 -------                          -----------                   ---------
