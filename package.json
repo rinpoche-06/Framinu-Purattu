@@ -1,0 +1,39 @@
+{
+  "name": "framinu-purathu",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Framinu Purathu (Out of Frame) - your picture talks back, with attitude.",
+  "scripts": {
+    "dev": "concurrently -n server,client -c blue,magenta \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:server": "node --watch server/index.mjs",
+    "dev:client": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "spike:voice": "node spike/01-voicelive-malayalam.mjs",
+    "spike:vision": "node spike/02-vision-character.mjs",
+    "spike:voicelab": "node spike/03-voice-lab.mjs",
+    "spike:express": "node spike/04-expressiveness-lab.mjs",
+    "spike:manglish": "node spike/05-manglish-lab.mjs"
+  },
+  "dependencies": {
+    "@azure/ai-voicelive": "^1.1.0",
+    "@azure/core-auth": "^1.9.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "redis": "^6.2.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@types/ws": "^8.5.13",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7"
+  }
+}
