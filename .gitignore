@@ -1,0 +1,13 @@
+node_modules/
+.env
+.env.local
+
+# Spike output: generated audio and logs. Never commit.
+spike/out/
+spike/logs/
+*.wav
+
+dist/
+build/
+.DS_Store
+Thumbs.db
