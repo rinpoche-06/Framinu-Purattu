@@ -218,24 +218,15 @@ For Hardware:
 
 # Video
 
-[TODO: add your demo video link here]
-
-*Should show: uploading a photo, the vision model inventing a personality from
-it, placing the mouth, then a live spoken exchange in Malayalam with captions —
-plus the idle prodding kicking in after twenty seconds of deliberate silence, and
-the escape animation.*
-
-# Additional Demos
-
-`docs/demo-script.md` has a two-minute presentation run, the questions that
-reliably land, a pre-demo checklist, and what to do when something fails on
-stage.
+https://drive.google.com/drive/folders/1Hc-7W2Kk7rXtzgSzoveOnbB19qZ5Dz4R?usp=sharing
 
 ## Team Contributions
 
-- Athul Krishna: [TODO: specific contributions]
+- Athul Krishna: Backend, voice pipeline and AI integration — the Node server,
+  provider evaluation, speech synthesis and the character prompts.
 
-- Rinto Cherian: [TODO: specific contributions]
+- Rinto Cherian: Frontend and presentation — the React client, mouth editor,
+  audio capture and playback, and the animation.
 
 ---
 
@@ -267,9 +258,6 @@ impatience. Never targets: body, appearance, caste, religion, region, family,
 gender, age, disability, money. That boundary is in the prompt and the character
 cannot be talked out of it. Famous artworks get identified along with their
 creator; private individuals are never named or given invented biography.
-
-Full reasoning, rejected approaches, and known limitations:
-`docs/project-brief.md` and `docs/provider-capability-checklist.md`.
 
 ---
 
