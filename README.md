@@ -36,8 +36,9 @@ The character is grounded in your specific image. A photo of a chair produced:
 
 ## Setup
 
-Requires Node 18+ and an Azure AI Foundry (or Azure AI Services) resource in a
-region that supports the Voice Live API.
+Requires Node 22 and an Azure AI Foundry (or Azure AI Services) resource in a
+region that supports the Voice Live API. Node 22 specifically, because
+`npm run dev:server` uses `node --watch`, which is only stable there.
 
 ```bash
 npm install
@@ -151,7 +152,7 @@ Set `TTS_PROVIDER` to choose who speaks:
 
 | | `sarvam` (default) | `azure` |
 |---|---|---|
-| Voice | Bulbul v3, `gokul` / `roopa` | `ml-IN-MidhunNeural` / `ml-IN-SobhanaNeural` |
+| Voice | Bulbul v3, `tarun` / `roopa` | `ml-IN-MidhunNeural` / `ml-IN-SobhanaNeural` |
 | Malayalam + English mixing | **works** | unintelligible |
 | First audio, measured | 2946 ms | 3270 ms |
 | Providers involved | two | one |
@@ -233,10 +234,11 @@ anyone, and the personality is fiction.
 
 ## It gets impatient
 
-Go quiet for 10 seconds and the character speaks unprompted, escalating over
+Go quiet for 20 seconds and the character speaks unprompted, escalating over
 three attempts and then giving up rather than nagging forever. The silence clock
 starts when it stops talking, and resets whenever you speak, type, or press
-Escape.
+Escape. Set `IDLE_PROD_MS` to change it — raise it for a long presentation so it
+does not talk over your explanations.
 
 Observed across 45 seconds of deliberate silence:
 
@@ -285,9 +287,13 @@ A real exchange with an uploaded Mona Lisa:
 
 ## Voice selection
 
-Azure has exactly two Malayalam voices, `ml-IN-MidhunNeural` and
-`ml-IN-SobhanaNeural`. That is the entire palette: no HD tier, no emotion styles,
-no neutral option. You pick between them on the prepare screen.
+You pick male or female on the prepare screen. Which two voices that maps to
+depends on the engine: `tarun` / `roopa` on the default Sarvam path, or
+`ml-IN-MidhunNeural` / `ml-IN-SobhanaNeural` on the Azure path.
+
+The Azure pair is the entire Malayalam palette that provider offers: no HD tier,
+no emotion styles, no neutral option. Sarvam has 37 Malayalam-capable voices, all
+of which were auditioned on a code-mixed line before casting these two.
 
 The toggle is pre-selected, but only where doing so does not involve guessing
 about a person:
@@ -355,15 +361,13 @@ the browser before they are sent anywhere.
 
 ## Reverting
 
-The Azure-only version is tagged, so going back is one command:
+Both engines are live code, so reverting is a config change rather than a code
+change. Set `TTS_PROVIDER=azure` in `.env` and restart. That restores server-side
+echo cancellation and interruption truncation, at the cost of Manglish.
 
-```
-git checkout working-azure-baseline
-```
-
-Or keep the Sarvam code and just switch engines by setting `TTS_PROVIDER=azure`
-in `.env` and restarting. That restores echo cancellation and truncation at the
-cost of Manglish.
+There is no Azure-only tag to check out. Keeping both paths behind the env flag is
+what replaced it, and it is the better mechanism: you can switch engines
+mid-demo without touching git.
 
 ## Surviving interruptions
 
@@ -389,9 +393,12 @@ to the previous behaviour rather than failing.
 `docs/demo-script.md` has a two-minute run, the questions that reliably work, a
 pre-demo checklist, and what to do when something fails on stage.
 
-Three one-tap examples are bundled on the landing screen so a demo does not
-involve a file picker: the Mona Lisa (shows artwork recognition), an appam
-(Kerala-specific humour), and the chair (proves no face is needed).
+One tap gets you the Mona Lisa on the landing screen, so a demo does not involve
+a file picker, and it shows artwork recognition immediately. A separate link
+skips straight to the demo chair if you want to prove no face is needed. An appam
+example used to sit alongside them and was dropped: a cartoon mouth pasted onto
+an object is the weakest version of the idea, and leading with it undersold
+everything else.
 
 The Mona Lisa image is in the public domain, from
 [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg).
@@ -407,8 +414,9 @@ The Mona Lisa image is in the public domain, from
 - Suggested mouth placement is often wrong. It is a model guess, not face
   landmark detection, so the editor is the real mechanism and the suggestion is
   just a starting point.
-- Character cards are held in memory and lost on server restart. An open tab
-  will silently fall back to the demo chair.
+- Character cards live in Redis with a 24h TTL, transcripts with a 2h TTL, so a
+  server restart no longer loses your character. Nothing depends on Redis being
+  up: with it stopped the browser re-registers the card it still holds.
 - Only the **last 12 turns** are remembered across a reconnect. Every replayed
   turn counts toward the prompt, so this bounds latency and cost rather than
   keeping everything.
@@ -416,4 +424,3 @@ The Mona Lisa image is in the public domain, from
   probably work on a phone; nobody has checked.
 - **No unit tests**, only the integration smoke tests in `spike/`.
 - One speaking subject per image. No multi-character conversations.
-- No unit tests yet, only the integration smoke tests above.

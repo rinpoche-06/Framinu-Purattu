@@ -221,7 +221,7 @@ the previous behaviour.
 
 **Incremental TTS streaming.** Waiting for the complete reply text before
 synthesising gave 3911ms to first audio. Synthesising sentence by sentence as
-text arrives brought it to ~3100ms.
+text arrives brought it to ~2950ms.
 
 **Sentence splitting is prosody-aware.** Every fragment is synthesised as an
 isolated utterance, so a fragment that is not a natural unit of speech gets
@@ -267,8 +267,8 @@ Nothing here is estimated.
 
 | Metric | Value |
 |---|---|
-| Time to first audio, Sarvam path | 3083–3454 ms |
-| Time to first audio, Azure path | 3270 ms |
+| Time to first audio, Sarvam path | 2946 ms (3388, 2951, 2500) |
+| Time to first audio, Azure path | 3270 ms (2693, 2993, 4124) |
 | Server-side speech pipeline | 480–760 ms |
 | Sarvam TTS first chunk alone | 382–611 ms |
 | Vision analysis | ~12 s |
