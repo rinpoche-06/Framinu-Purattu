@@ -148,6 +148,44 @@ npm run build          # typecheck + production build
 node spike/06-server-smoke.mjs   # end-to-end test, no microphone needed
 node spike/07-phase2-smoke.mjs   # upload -> character card -> speaking character
 ```
+## Live link, and why it is a landing page
+
+**Project URL:** https://rinpoche-06.github.io/Framinu-Purattu/ — a static landing
+page, not a running instance of the app.
+
+That is deliberate, and worth explaining rather than glossing over. This app
+cannot sit behind a public URL as it stands, for four reasons in increasing order
+of how hard they are to remove.
+
+**The realtime model is capped at 10 requests per minute.** One conversation is
+one session, so ten strangers connecting inside the same minute start getting
+failures. Deploying does not make that scale — it only makes the ceiling
+reachable by people we cannot coordinate with.
+
+**There is no authentication.** A public URL would put an unauthenticated
+endpoint directly in front of live API credentials. Before it could be shared it
+needs a concurrency cap, per-IP rate limiting, and a reserved slot for whoever is
+presenting.
+
+**`getUserMedia` requires a secure context.** Microphone access works on
+`localhost` and over HTTPS, but not over a plain LAN address — so "just open it on
+your phone" does not work without real hosting or a tunnel.
+
+**The backend needs a long-lived process.** It holds an open provider session,
+per-connection timers, and a synthesis chain that lives for the whole
+conversation. Serverless platforms are the wrong shape for that; this needs an
+ordinary Node host.
+
+There is also no frontend-only version to deploy, which is the part people assume
+is possible. Azure Voice Live cannot mint short-lived browser credentials from a
+long-lived key — there is no token exchange — so the browser can never talk to
+the provider directly. Every credential lives on the Node server and the browser
+is a thin audio client that sends and plays PCM16 frames. Shipping the key to the
+client would publish a permanent secret to every visitor, so a static deploy
+would be a UI with nothing behind it.
+
+So: the landing page explains the project, the demo video shows it working, and
+`npm run dev` has the real thing running locally in about a minute.
 
 ### Project Documentation
 
