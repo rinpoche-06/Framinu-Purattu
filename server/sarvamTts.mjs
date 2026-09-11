@@ -23,13 +23,26 @@ const ENDPOINT = "https://api.sarvam.ai/text-to-speech/stream";
 const SAMPLE_RATE = 24000;
 const MODEL = process.env.SARVAM_TTS_MODEL ?? "bulbul:v3";
 
-/** Chosen by listening test across all 37 Malayalam-capable voices. */
+/**
+ * Chosen by auditioning all 37 Malayalam-capable voices on a code-mixed line.
+ *
+ * The male voice was recast from `gokul` to `tarun`: on pure Malayalam both are
+ * fine, but on Manglish `gokul` flattens the English words while `tarun` keeps
+ * them in the same register as the Malayalam around them. These are the cast
+ * defaults, so the app sounds right without an env file.
+ */
 export const SARVAM_VOICES = {
-  male: process.env.SARVAM_VOICE_MALE ?? "gokul",
+  male: process.env.SARVAM_VOICE_MALE ?? "tarun",
   female: process.env.SARVAM_VOICE_FEMALE ?? "roopa",
 };
 
-const PACE = Number(process.env.SARVAM_PACE ?? 1.0);
+/**
+ * Speech rate, chosen by ear. Bulbul re-plans prosody per pace rather than
+ * time-scaling the audio, so this is not a linear dial and 1.05 is not simply
+ * "5% faster" — it is the value that reads as brisk without sounding
+ * fast-forwarded. Above about 1.1 it does.
+ */
+const PACE = Number(process.env.SARVAM_PACE ?? 1.05);
 
 export class SarvamError extends Error {}
 
