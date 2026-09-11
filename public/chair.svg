@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" role="img" aria-label="A tired old plastic chair">
+  <defs>
+    <linearGradient id="plastic" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f7f3e8" />
+      <stop offset="55%" stop-color="#e6ddc8" />
+      <stop offset="100%" stop-color="#cfc3a8" />
+    </linearGradient>
+    <linearGradient id="seatShade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#efe8d6" />
+      <stop offset="100%" stop-color="#c9bda2" />
+    </linearGradient>
+    <radialGradient id="floor" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#00000026" />
+      <stop offset="100%" stop-color="#00000000" />
+    </radialGradient>
+  </defs>
+
+  <rect width="600" height="800" fill="#8a9a8f" />
+  <rect width="600" height="800" fill="#00000010" />
+
+  <!-- floor shadow -->
+  <ellipse cx="300" cy="712" rx="215" ry="42" fill="url(#floor)" />
+
+  <!-- backrest -->
+  <g>
+    <rect x="118" y="96" width="364" height="340" rx="54" fill="url(#plastic)" stroke="#a89a7c" stroke-width="5" />
+    <!-- moulded slot, the kind every plastic chair has -->
+    <rect x="176" y="140" width="248" height="26" rx="13" fill="#00000014" />
+    <!-- No eyes drawn here on purpose: the app overlays cartoon eyes so they
+         can blink and follow the cursor. Painted ones would sit underneath. -->
+    <!-- tired brows, which the overlay eyes sit below -->
+    <path d="M205 194 Q238 178 271 194" fill="none" stroke="#8d8064" stroke-width="6" stroke-linecap="round" />
+    <path d="M329 194 Q362 178 395 194" fill="none" stroke="#8d8064" stroke-width="6" stroke-linecap="round" />
+  </g>
+
+  <!-- seat -->
+  <path d="M96 436 H504 Q520 436 516 452 L494 520 Q490 534 474 534 H126 Q110 534 106 520 L84 452 Q80 436 96 436 Z"
+        fill="url(#seatShade)" stroke="#a89a7c" stroke-width="5" />
+
+  <!-- legs -->
+  <g stroke="#b3a686" stroke-width="20" stroke-linecap="round" fill="none">
+    <path d="M138 534 L112 700" />
+    <path d="M462 534 L488 700" />
+    <path d="M196 534 L206 690" />
+    <path d="M404 534 L394 690" />
+  </g>
+  <g stroke="#9c8f70" stroke-width="9" stroke-linecap="round" fill="none">
+    <path d="M124 630 L200 622" />
+    <path d="M400 622 L476 630" />
+  </g>
+</svg>
