@@ -150,7 +150,31 @@ node spike/07-phase2-smoke.mjs   # upload -> character card -> speaking characte
 ```
 ## Live link, and why it is a landing page
 
-**Project URL:** https://rinpoche-06.github.io/Framinu-Purattu/ — a static landing
+## Live link
+
+**Source URL submitted in the HubApp:** https://framinu-purathu.vercel.app/
+
+This is a frontend-only build, deployed on the guidance of the TinkerHub
+coordinators and mentors for the event, who asked that every team submit a working
+link. It shows the interface and the design. The conversation itself runs on a Node
+server that cannot be made public, so the talking part is not live at that URL.
+
+Three things stand in the way of hosting the whole thing: the realtime model is
+capped at 10 requests per minute, so one conversation is one session and a handful
+of simultaneous visitors would exhaust it; there is no authentication, and a public
+URL would put an unauthenticated endpoint in front of live API credentials; and the
+backend holds an open provider session with per-connection timers for the length of
+each conversation, which needs an ordinary long-lived Node host rather than a
+serverless one. A self-sufficient frontend is not an option either — Azure Voice
+Live cannot mint short-lived browser credentials from a long-lived key, so the keys
+have to stay server-side and the browser stays a thin audio client that sends and
+plays PCM16 frames.
+
+For the real thing: the demo video shows a full conversation, and `npm run dev` has
+it running locally in about a minute.
+
+
+**Landing PAGE URL:** https://rinpoche-06.github.io/Framinu-Purattu/ — a static landing
 page, not a running instance of the app.
 
 That is deliberate, and worth explaining rather than glossing over. This app
