@@ -1,16 +1,559 @@
-<!doctype html>
-<html lang="ml">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ഫ്രെയിമിന് പുറത്ത് · Framinu Purathu</title>
-    <meta
-      name="description"
-      content="Every picture has a story. Unfortunately, it also has an attitude."
-    />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ഫ്രെയിമിന് പുറത്ത് · Framinu Purathu — The Gallery That Talks Back</title>
+<meta name="description" content="Upload a photo. It becomes a character. It insults you. In Malayalam. A TinkerHub Useless Projects entry by team CusCus.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c130b;
+    --parchment:#e8dcbe;
+    --parchment-dark:#d7c69c;
+    --parchment-shadow:#a9946a;
+    --wood:#2c1b10;
+    --wood-light:#4a2f19;
+    --emerald:#0f3324;
+    --emerald-deep:#081f16;
+    --gold:#c9a24b;
+    --gold-bright:#e6c877;
+    --oxblood:#5e1a22;
+    --note-yellow:#f3e2a0;
+    --note-pink:#e9c8c3;
+    --note-blue:#c9d9d3;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(201,162,75,0.08), transparent 45%),
+      radial-gradient(ellipse at 80% 100%, rgba(94,26,34,0.10), transparent 50%),
+      var(--emerald-deep);
+    color:var(--parchment);
+    font-family:'EB Garamond', serif;
+    font-size:19px;
+    line-height:1.6;
+  }
+
+  a{color:var(--gold-bright);}
+  a:focus-visible, button:focus-visible{outline:3px solid var(--gold-bright); outline-offset:3px;}
+
+  h1,h2,h3{font-family:'Cinzel Decorative', serif; font-weight:700; margin:0; letter-spacing:0.01em;}
+
+  .wrap{max-width:900px; margin:0 auto; padding:0 24px;}
+
+  /* ---------- corridor background texture ---------- */
+  .corridor{
+    background-image:
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.18) 0 2px, transparent 2px 220px),
+      linear-gradient(180deg, var(--emerald) 0%, var(--emerald-deep) 100%);
+    border-top:10px solid var(--wood);
+    border-bottom:10px solid var(--wood);
+    padding:80px 0 70px;
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{ text-align:center; position:relative; padding-top:20px; }
+  .torch{
+    position:absolute; top:10px; font-size:34px;
+    filter: drop-shadow(0 0 14px rgba(255,180,60,0.6));
+    animation:flicker 2.6s infinite ease-in-out;
+  }
+  .torch.left{ left:2%; } .torch.right{ right:2%; }
+  @keyframes flicker{
+    0%,100%{ opacity:1; transform:scale(1) rotate(-1deg); }
+    45%{ opacity:0.75; transform:scale(0.94) rotate(1deg); }
+    60%{ opacity:1; transform:scale(1.05) rotate(-2deg); }
+  }
+
+  .eyebrow-mal{
+    font-family:'EB Garamond', serif; font-style:italic; color:var(--gold-bright);
+    font-size:1.15rem; margin-bottom:6px;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem, 5.5vw, 3.6rem);
+    color:var(--gold-bright);
+    text-shadow:0 0 22px rgba(230,200,119,0.35), 0 2px 0 rgba(0,0,0,0.4);
+    line-height:1.15;
+  }
+  .hero .subtitle{
+    max-width:560px; margin:22px auto 0; font-size:1.22rem; color:#f1e6c8;
+  }
+  .hero .credit{
+    margin-top:34px; font-family:'Caveat', cursive; font-size:1.4rem; color:var(--gold);
+  }
+
+  .wand-divider{
+    width:100%; max-width:520px; margin:46px auto 0; height:2px;
+    background:linear-gradient(90deg, transparent, var(--gold), transparent);
+    position:relative;
+  }
+  .wand-divider::before{
+    content:"✦"; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    color:var(--gold-bright); background:var(--emerald-deep); padding:0 14px; font-size:1.1rem;
+  }
+
+  /* ---------- SECTION LABELS ---------- */
+  .plaque{
+    display:inline-block; background:var(--wood); color:var(--gold-bright);
+    border:1px solid var(--gold); padding:6px 22px; font-family:'Cinzel Decorative', serif;
+    font-size:1rem; margin-bottom:26px; box-shadow:0 3px 0 rgba(0,0,0,0.3);
+  }
+
+  section{ position:relative; padding:76px 0; }
+  section.on-parchment{ background:var(--parchment); color:var(--ink); }
+  section.on-parchment h2{ color:var(--oxblood); }
+  section.on-parchment .plaque{ background:var(--oxblood); color:var(--parchment); border-color:var(--wood); }
+
+  .section-head{ text-align:center; margin-bottom:44px; }
+  .section-head h2{ font-size:clamp(1.6rem,3.6vw,2.3rem); }
+  .section-head p.lede{ max-width:560px; margin:14px auto 0; font-style:italic; opacity:0.85;}
+
+  /* ---------- FRAMED PORTRAIT ---------- */
+  .frame{
+    background:var(--wood);
+    padding:14px;
+    border-radius:2px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.45), inset 0 0 0 2px rgba(201,162,75,0.5);
+    position:relative;
+  }
+  .frame::before{
+    content:""; position:absolute; inset:6px; border:2px solid var(--gold); pointer-events:none;
+  }
+  .frame-inner{
+    background:linear-gradient(160deg, #f4e9c9, #dcc98e 60%, #cdb578);
+    padding:26px 22px 20px;
+    color:#2a1c0e;
+    min-height:100%;
+  }
+  .frame-plate{
+    text-align:center; font-family:'Cinzel Decorative',serif; font-size:0.82rem;
+    background:var(--gold); color:var(--wood); display:inline-block; padding:3px 14px;
+    margin-top:12px; letter-spacing:0.03em;
+  }
+
+  /* ---------- portrait gallery grid ---------- */
+  .gallery{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin-top:10px;
+  }
+  @media (max-width:760px){ .gallery{ grid-template-columns:1fr; } }
+  .gallery .frame{ transform:rotate(-1.2deg); }
+  .gallery .frame:nth-child(2){ transform:rotate(0.8deg); }
+  .gallery .frame:nth-child(3){ transform:rotate(-0.6deg); }
+
+  .portrait-art{ width:100%; height:150px; display:block; margin:0 auto; }
+  .speech{
+    font-style:italic; font-size:0.98rem; margin:14px 0 4px; min-height:70px;
+  }
+  .speech .en{ display:block; font-style:normal; font-size:0.82rem; opacity:0.75; margin-top:5px;}
+
+  /* ---------- HANDWRITTEN NOTES ---------- */
+  .note{
+    font-family:'Caveat', cursive; font-size:1.28rem; line-height:1.25;
+    background:var(--note-yellow); color:#3a2a10; padding:14px 16px 18px;
+    box-shadow:0 8px 16px rgba(0,0,0,0.35);
+    position:absolute; width:190px; z-index:5;
+    transform:rotate(-6deg);
+  }
+  .note::before{
+    content:""; position:absolute; top:-10px; left:50%; transform:translateX(-50%) rotate(3deg);
+    width:46px; height:18px; background:rgba(255,255,255,0.55); border:1px solid rgba(0,0,0,0.08);
+  }
+  .note.pink{ background:var(--note-pink); }
+  .note.blue{ background:var(--note-blue); }
+  .note.tilt-r{ transform:rotate(5deg); }
+  .note.tilt-l{ transform:rotate(-8deg); }
+  .note.static{ position:static; margin:26px auto 0; transform:rotate(-2deg); }
+
+  @media (max-width:900px){
+    .note.abs-desktop{ display:none; }
+  }
+
+  /* ---------- INGREDIENTS / TECH ---------- */
+  .shelf{ display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:10px; }
+  @media (max-width:700px){ .shelf{ grid-template-columns:1fr; } }
+  .jar{
+    background:#fbf3d9; border:1px solid var(--parchment-shadow); padding:20px 22px;
+    box-shadow:4px 4px 0 rgba(44,27,16,0.18);
+  }
+  .jar h3{ font-family:'Cinzel Decorative',serif; font-size:1.05rem; color:var(--oxblood); margin-bottom:10px; }
+  .jar ul{ margin:0; padding-left:20px; }
+  .jar li{ margin-bottom:6px; }
+
+  table.relics{ width:100%; border-collapse:collapse; margin-top:14px; font-size:0.98rem; }
+  table.relics th, table.relics td{ text-align:left; padding:10px 12px; border-bottom:1px solid var(--parchment-shadow); }
+  table.relics th{ font-family:'Cinzel Decorative',serif; font-size:0.9rem; color:var(--oxblood); }
+
+  .stat-row{ display:flex; gap:18px; flex-wrap:wrap; justify-content:center; margin-top:36px; }
+  .stat{
+    background:var(--wood); border:1px solid var(--gold); padding:18px 24px; text-align:center;
+    min-width:150px; box-shadow:0 6px 0 rgba(0,0,0,0.3);
+  }
+  .stat .num{ font-family:'Cinzel Decorative',serif; color:var(--gold-bright); font-size:1.5rem; display:block;}
+  .stat .lbl{ font-size:0.85rem; color:#e7dcb8; }
+
+  /* ---------- MAP / ARCHITECTURE ---------- */
+  .map{
+    background:radial-gradient(ellipse at center, #f4e6bd 0%, #e2cd94 70%, #cbb377 100%);
+    border:6px double var(--wood); padding:34px 24px; color:#2a1c0e; position:relative;
+  }
+  .map-flow{ display:flex; flex-direction:column; gap:0; align-items:center; font-family:'EB Garamond', serif; }
+  .map-box{
+    border:2px solid var(--wood); background:rgba(255,255,255,0.35); padding:10px 18px;
+    text-align:center; min-width:220px; font-size:0.95rem;
+  }
+  .map-arrow{ font-size:1.4rem; color:var(--wood); margin:2px 0; }
+  .map-branch{ display:flex; gap:36px; justify-content:center; flex-wrap:wrap; margin:10px 0; }
+
+  /* ---------- PENSIEVE / SCREENSHOTS ---------- */
+  .vials{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:10px;}
+  @media (max-width:760px){ .vials{ grid-template-columns:1fr; } }
+  .vial{
+    background:linear-gradient(180deg, rgba(120,220,190,0.18), rgba(120,220,190,0.05));
+    border:1px solid rgba(201,162,75,0.5); border-radius:50% 50% 20% 20% / 30% 30% 15% 15%;
+    padding:26px 18px; text-align:center;
+  }
+  .vial .glow{ font-size:2rem; display:block; margin-bottom:8px; }
+  .vial p{ font-size:0.92rem; color:#e7dcb8; }
+  .vial b{ display:block; color:var(--gold-bright); font-family:'Cinzel Decorative',serif; font-size:0.85rem; margin-bottom:6px;}
+
+  /* ---------- VOW / BOUNDARIES ---------- */
+  .vow{ display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:10px; }
+  @media (max-width:700px){ .vow{ grid-template-columns:1fr; } }
+  .vow div{ padding:20px 22px; }
+  .vow .yes{ background:rgba(15,51,36,0.5); border:1px solid #3f7a5c; }
+  .vow .no{ background:rgba(94,26,34,0.35); border:1px solid var(--oxblood); }
+  .vow h3{ font-family:'Cinzel Decorative',serif; font-size:1rem; margin-bottom:10px; }
+
+  /* ---------- SCROLL / PROPHECY ---------- */
+  .scroll{
+    background:var(--parchment-dark); color:var(--ink); border-radius:6px;
+    padding:34px 30px; box-shadow:inset 0 0 40px rgba(90,60,20,0.25), 0 10px 24px rgba(0,0,0,0.35);
+    position:relative;
+  }
+  .scroll ol{ padding-left:22px; }
+  .scroll li{ margin-bottom:16px; }
+  .scroll li b{ color:var(--oxblood); }
+
+  /* ---------- TEAM ---------- */
+  .house{ display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:10px; }
+  @media (max-width:700px){ .house{ grid-template-columns:1fr; } }
+  .member{ background:var(--wood); border:1px solid var(--gold); padding:22px; text-align:center; }
+  .member .role{ font-family:'Cinzel Decorative',serif; color:var(--gold-bright); font-size:0.95rem; margin-bottom:6px;}
+  .member .name{ font-size:1.15rem; margin-bottom:4px; }
+  .member .school{ font-size:0.88rem; opacity:0.8; }
+
+  /* ---------- FOOTER / LINKS ---------- */
+  footer{ text-align:center; padding:70px 0 60px; background:var(--wood); }
+  .cta-row{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin:26px 0 10px; }
+  .cta{
+    display:inline-block; font-family:'Cinzel Decorative',serif; font-size:0.92rem;
+    color:var(--wood); background:var(--gold-bright); padding:13px 26px; text-decoration:none;
+    box-shadow:0 5px 0 rgba(0,0,0,0.35);
+  }
+  .cta.secondary{ background:transparent; color:var(--gold-bright); border:1.5px solid var(--gold-bright); box-shadow:none;}
+  footer .sig{ font-family:'Caveat', cursive; font-size:1.5rem; color:var(--gold); margin-top:36px; }
+  footer .fine{ font-size:0.8rem; opacity:0.6; margin-top:18px; }
+
+  @media (prefers-reduced-motion: reduce){
+    .torch{ animation:none; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== HERO ===================== -->
+<div class="corridor">
+  <span class="torch left" aria-hidden="true">🕯️</span>
+  <span class="torch right" aria-hidden="true">🕯️</span>
+  <div class="wrap hero">
+    <div class="eyebrow-mal">ഫ്രെയിമിന് പുറത്ത്</div>
+    <h1>Framinu Purathu</h1>
+    <p class="subtitle">Upload a photograph. It grows a personality, a grudge, and a mouth — then it argues with you out loud, in Malayalam, because you woke it up for no good reason.</p>
+    <p class="credit">a portrait gallery that finally talks back</p>
+    <div class="wand-divider"></div>
+  </div>
+</div>
+
+<!-- ===================== THE PROBLEM ===================== -->
+<section>
+  <div class="wrap" style="position:relative;">
+    <div class="section-head">
+      <span class="plaque">Chapter One</span>
+      <h2>The Problem (That Doesn't Exist)</h2>
+    </div>
+    <div class="frame">
+      <div class="frame-inner">
+        <p>Photographs have sat in galleries for decades in total silence, holding the same pose, saying nothing. Nobody has ever asked how the appam feels about being photographed instead of eaten. Nobody has checked whether the Mona Lisa is tired. Nobody has considered that your plastic chair has four legs and still cannot walk out of the frame.</p>
+        <p>Worse: nobody has ever been roasted in fluent Malayalam by their own furniture. A gap in the human experience, frankly overdue.</p>
+        <div style="text-align:center;"><span class="frame-plate">est. TinkerHub Useless Projects</span></div>
+      </div>
+    </div>
+    <div class="note tilt-r abs-desktop" style="top:-10px; right:-40px;">
+      first attempt: portrait had no opinions.<br>second attempt: portrait had <u>too many</u> opinions.<br>we called it balanced. 🪶
+    </div>
+  </div>
+</section>
+
+<!-- ===================== THE SOLUTION / PORTRAIT GALLERY ===================== -->
+<div class="corridor">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="plaque">Chapter Two</span>
+      <h2 style="color:var(--gold-bright);">The Solution (Nobody Asked For)</h2>
+      <p class="lede" style="color:#f1e6c8;">We gave the photograph a mouth, a grievance, and strong opinions about your photography. Hold space, talk, and it answers — in character, under twenty words, with theatrical comic timing.</p>
+    </div>
+
+    <div class="gallery">
+      <div class="frame">
+        <div class="frame-inner">
+          <svg class="portrait-art" viewBox="0 0 160 150" role="img" aria-label="Stylised portrait resembling a smiling seated woman">
+            <rect width="160" height="150" fill="#e7d3a1"/>
+            <path d="M0 150 L20 60 Q40 10 80 10 Q120 10 140 60 L160 150 Z" fill="#3d2d1a"/>
+            <ellipse cx="80" cy="72" rx="30" ry="36" fill="#e8c39a"/>
+            <path d="M50 55 Q80 30 110 55 L108 70 Q80 50 52 70 Z" fill="#241a10"/>
+            <path d="M60 96 Q80 108 100 96" stroke="#5a3a25" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </svg>
+          <p class="speech">"ഓഹോ... എന്നെ വരച്ചത് ലിയോനാർദോ ദാ വിഞ്ചി, ഇനി ചോദ്യം തീർന്നോ പ്രിയമേ!"
+            <span class="en">"Yes, da Vinci painted me. Are we done here?"</span></p>
+          <div style="text-align:center;"><span class="frame-plate">Still Smiling — brushwork withheld, she has a lawyer now</span></div>
+        </div>
+      </div>
+
+      <div class="frame">
+        <div class="frame-inner">
+          <svg class="portrait-art" viewBox="0 0 160 150" role="img" aria-label="Stylised drawing of a plastic chair">
+            <rect width="160" height="150" fill="#dfe8df"/>
+            <rect x="45" y="30" width="70" height="8" rx="2" fill="#3b6b52"/>
+            <rect x="45" y="30" width="8" height="90" fill="#3b6b52"/>
+            <rect x="107" y="30" width="8" height="90" fill="#3b6b52"/>
+            <rect x="40" y="70" width="80" height="10" rx="2" fill="#3b6b52"/>
+            <rect x="46" y="120" width="8" height="24" fill="#274c3a"/>
+            <rect x="106" y="120" width="8" height="24" fill="#274c3a"/>
+            <rect x="46" y="80" width="68" height="6" fill="#274c3a" opacity="0.4"/>
+          </svg>
+          <p class="speech">"നാല് കാലുകളുണ്ടായിട്ടും ഈ ചിത്രത്തിൽനിന്ന് ഒരടി പോലും നടക്കാനാകുന്നില്ല"
+            <span class="en">"Four legs, and still can't walk one step out of this picture."</span></p>
+          <div style="text-align:center;"><span class="frame-plate">Unprompted, deeply offended</span></div>
+        </div>
+      </div>
+
+      <div class="frame">
+        <div class="frame-inner">
+          <svg class="portrait-art" viewBox="0 0 160 150" role="img" aria-label="Stylised portrait of a stern grumbling figure trapped in a frame">
+            <rect width="160" height="150" fill="#ead9b8"/>
+            <path d="M0 150 L15 70 Q40 20 80 20 Q120 20 145 70 L160 150 Z" fill="#5a1f2a"/>
+            <circle cx="80" cy="66" r="30" fill="#e6c19a"/>
+            <path d="M55 55 Q80 40 105 55" stroke="#2b1c10" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M64 82 Q80 74 96 82" stroke="#3a2413" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </svg>
+          <p class="speech">"എന്റമ്മോ... പുറത്തുപോകാൻ permission ഇല്ല, എന്റെ freedom ഫോട്ടോ സൈസ്!"
+            <span class="en">"My freedom is exactly one photo-sized rectangle."</span></p>
+          <div style="text-align:center;"><span class="frame-plate">Escalates after 20 seconds of your silence</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><span class="num">&lt;20 words</span><span class="lbl">per reply, theatrical pauses included</span></div>
+      <div class="stat"><span class="num">3×</span><span class="lbl">unprompted nudges before it gives up on you</span></div>
+      <div class="stat"><span class="num">₹0.30</span><span class="lbl">per reply, measured not guessed</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== INGREDIENTS / TECH ===================== -->
+<section class="on-parchment" style="position:relative;">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="plaque">Chapter Three</span>
+      <h2>Ingredients for the Potion</h2>
+      <p class="lede">No agent framework, no RAG, no 3D engine, no vector database. Twenty-one throwaway spike scripts and a great deal of stubbornness.</p>
+    </div>
+
+    <div class="shelf">
+      <div class="jar">
+        <h3>Cauldron Base</h3>
+        <ul>
+          <li>TypeScript 5.9 (strict), Node 22, Express 4.22</li>
+          <li>React 18.3 + Vite 6.4 on the front end</li>
+          <li>Web Audio API, AudioWorklet, hand-rolled SVG — no animation library</li>
+          <li>Redis for character cards and transcripts (optional, degrades gracefully)</li>
+        </ul>
+      </div>
+      <div class="jar">
+        <h3>Deliberately Left Out</h3>
+        <ul>
+          <li>No state manager, no UI kit</li>
+          <li>No RAG, no vector database, no agent framework</li>
+          <li>No 3D engine, no video generation</li>
+          <li>No lip-sync — this is audio-reactive puppetry, and proud of it</li>
+        </ul>
+      </div>
+    </div>
+
+    <table class="relics">
+      <thead><tr><th>Role</th><th>Service</th><th>Model / Voice</th></tr></thead>
+      <tbody>
+        <tr><td>Speech + conversation</td><td>Azure AI Foundry Voice Live</td><td>gpt-realtime-2.1</td></tr>
+        <tr><td>Malayalam synthesis</td><td>Sarvam AI</td><td>bulbul:v3 — tarun / roopa</td></tr>
+        <tr><td>Image understanding</td><td>Azure AI Foundry</td><td>gpt-5.6-sol</td></tr>
+        <tr><td>Fallback synthesis</td><td>Azure Speech TTS</td><td>ml-IN-MidhunNeural / SobhanaNeural</td></tr>
+      </tbody>
+    </table>
+    <div class="note static" style="max-width:340px;">
+      gpt-realtime doesn't list Malayalam. Gemini Live doesn't support it at all. Azure's two Malayalam voices can't code-mix. Sarvam could. that's the whole plot twist. 🧪
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MARAUDER'S MAP ===================== -->
+<div class="corridor">
+  <div class="wrap" style="position:relative;">
+    <div class="section-head">
+      <span class="plaque">Chapter Four</span>
+      <h2 style="color:var(--gold-bright);">The Marauder's Map</h2>
+      <p class="lede" style="color:#f1e6c8;">I solemnly swear the key never leaves the server.</p>
+    </div>
+    <div class="map">
+      <div class="map-flow">
+        <div class="map-box">Your mic → AudioWorklet → PCM16</div>
+        <div class="map-arrow">↓</div>
+        <div class="map-box">Node server (holds every API key)</div>
+        <div class="map-arrow">↓</div>
+        <div class="map-branch">
+          <div class="map-box">Azure Voice Live<br><small>speech-to-text + reply</small></div>
+          <div class="map-box">Sarvam Bulbul v3<br><small>Malayalam speech out</small></div>
+        </div>
+        <div class="map-arrow">↓</div>
+        <div class="map-box">Speakers ← playback ← AnalyserNode → mouth openness</div>
+        <div class="map-arrow">↓</div>
+        <div class="map-box">Azure vision model reads the photo · Redis remembers the character</div>
+      </div>
+    </div>
+    <div class="note blue tilt-l abs-desktop" style="bottom:-4px; right:-30px;">
+      Voice Live has no token exchange, so the key can never touch the browser. found this out the hard way, before shipping — not after. 😅
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PENSIEVE ===================== -->
+<div class="corridor">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="plaque">Chapter Five</span>
+      <h2 style="color:var(--gold-bright);">The Pensieve</h2>
+      <p class="lede" style="color:#f1e6c8;">Three memories worth extracting. The full run lives in the demo video and one minute of <code>npm run dev</code>.</p>
+    </div>
+    <div class="vials">
+      <div class="vial">
+        <span class="glow">🖼️</span>
+        <b>Memory One</b>
+        <p>The landing screen resumes a session: "നിന്റെ ചിത്രം ഓർത്തുവെച്ചു" — it remembered your picture, so you're not back at square one after a reload.</p>
+      </div>
+      <div class="vial">
+        <span class="glow">👁️</span>
+        <b>Memory Two</b>
+        <p>The character on stage, named മോനാലിസ. The eyes and mouth are SVG overlays that track your cursor and blink on their own — no video generated per reply.</p>
+      </div>
+      <div class="vial">
+        <span class="glow">🗨️</span>
+        <b>Memory Three</b>
+        <p>Mid-conversation, reconnected: it addresses you by name and carries on the exchange instead of reintroducing itself. Push-to-talk, an escape lunge, and a type-a-question fallback sit below.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== UNBREAKABLE VOW (Chapter Six) ===================== -->
+<section class="on-parchment" style="position:relative;">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="plaque">Chapter Six</span>
+      <h2>The Unbreakable Vow</h2>
+      <p class="lede">The roasting has a boundary, and the character cannot be talked out of it.</p>
+    </div>
+    <div class="vow">
+      <div class="yes">
+        <h3 style="color:#bfe6cf;">Fair game</h3>
+        <p>Talking to a photograph instead of doing something useful. Your questions. Your lighting. Your impatience.</p>
+      </div>
+      <div class="no">
+        <h3 style="color:#f0c3c9;">Never a target</h3>
+        <p>Body, appearance, caste, religion, region, family, gender, age, disability, money. Private individuals are never named or given an invented life story.</p>
+      </div>
+    </div>
+    <div class="note pink tilt-r abs-desktop" style="top:20px; right:-36px;">
+      this rule lives inside the prompt, not the UI. easy to skip, harder to enforce — took longer than the jokes did.
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROPHECY / WHY NOT HOSTED ===================== -->
+<div class="corridor">
+  <div class="wrap" style="position:relative;">
+    <div class="section-head">
+      <span class="plaque">Chapter Seven</span>
+      <h2 style="color:var(--gold-bright);">Why the Real One Isn't Behind This Page</h2>
+      <p class="lede" style="color:#f1e6c8;">Read before assuming this is just a lazy static deploy.</p>
+    </div>
+    <div class="scroll">
+      <ol>
+        <li><b>The model has a ceiling.</b> Ten requests a minute, provider-side. One conversation is one session — a few visitors at once would exhaust it, and hosting only makes that ceiling reachable by strangers.</li>
+        <li><b>There is no login.</b> A public URL would sit an unauthenticated door in front of live API credentials. It needs a concurrency cap and per-IP limits first.</li>
+        <li><b>Microphones need HTTPS.</b> A plain LAN address won't grant mic access — no shortcut around real hosting or a tunnel.</li>
+        <li><b>The key can't move to the browser.</b> Voice Live has no short-lived-token exchange, so every credential stays on the Node server for the whole conversation. Shipping it to the client would hand a permanent secret to every visitor — which is also why this static page cannot secretly be the whole app.</li>
+      </ol>
+      <p style="margin:0;">So: this page explains it, the demo video shows it talking, and <code>npm run dev</code> has the real thing running locally in about a minute.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TEAM ===================== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="plaque">The House</span>
+      <h2 style="color:var(--gold-bright);">Team CusCus</h2>
+      <p class="lede" style="color:#f1e6c8;">College of Engineering Chengannur</p>
+    </div>
+    <div class="house">
+      <div class="member">
+        <div class="role">Voice, Backend &amp; the Provider Chase</div>
+        <div class="name">Athul Krishna</div>
+        <div class="school">Team Lead — Node server, provider evaluation, speech synthesis, character prompts</div>
+      </div>
+      <div class="member">
+        <div class="role">Face, Frame &amp; the Living Mouth</div>
+        <div class="name">Rinto Cherian</div>
+        <div class="school">React client, mouth editor, audio capture &amp; playback, animation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap">
+    <h2 style="color:var(--gold-bright); font-size:1.6rem;">Wake One Up</h2>
+    <p style="max-width:480px; margin:14px auto 0; color:#e7dcb8;">Upload a photo, hold space, and find out what it's been holding in.</p>
+    <div class="cta-row">
+      <a class="cta" href="https://framinu-purathu.vercel.app/">See the interface</a>
+      <a class="cta secondary" href="https://drive.google.com/drive/folders/1Hc-7W2Kk7rXtzgSzoveOnbB19qZ5Dz4R?usp=sharing">Watch it actually talk</a>
+    </div>
+    <p class="sig">Made with ❤️ (and 21 spike scripts) at TinkerHub Useless Projects</p>
+    <p class="fine">This page is the frame. The conversation lives on a server that stays home for everyone's safety, including the Mona Lisa's.</p>
+  </div>
+</footer>
+
+</body>
 </html>
